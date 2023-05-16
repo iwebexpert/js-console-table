@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="./img/table.svg" type="image/svg" />
+    <title>Консольная таблица</title>
+    <style>
+      body {
+        background-color: orangered;
+        color: white;
+        font-size: 5rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      input[type="range"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 300px;
+        height: 5px;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    0 <input type="range" min="0" max="99" value="50" id="field1" />
+    <output>50</output>
+    <script>
+      // const films = [
+      //   { title: "Начало", rating: 87 },
+      //   { title: "Темный рыцарь", rating: 90 },
+      //   { title: "Криминальное чтиво", rating: 94 },
+      //   { title: "Бойцовский клуб", rating: 88 },
+      //   { title: "Побег из Шоушенка", rating: 93 },
+      // ].sort((a, b) => a.rating > b.rating);
+      // console.table(films);
+
+      // console.log(JSON.stringify(films));
+
+      let films = [];
+
+      fetch("./films.json")
+        .then((response) => response.json())
+        .then((items) => {
+          films = items;
+          console.table(items);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      const field1 = document.getElementById("field1");
+      field1.addEventListener("input", (event) => {
+        const value = event.target.value;
+        event.target.nextElementSibling.value = value;
+
+        const filteredFilms = films.filter((item) => item.rating >= value);
+        console.clear();
+        console.table(filteredFilms);
+      });
+    </script>
+  </body>
+</html>
